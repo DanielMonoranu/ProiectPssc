@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace Domain
     public class CancelDeliveryWorkflow
     {
 
-        public ICancelDeliveryEvent Execute(CancelDeliveryCommand command, Func<DeliveryNumber, bool> checkDeliveryExists)
+        public async Task <ICancelDeliveryEvent >ExecuteAsync(CancelDeliveryCommand command, Func<DeliveryNumber, TryAsync<bool>> checkDeliveryExists)
         {
             UnvalidatedDeliveries unvalidatedDeliveries = new UnvalidatedDeliveries(command.InputDeliveries);
-            IDeliveries deliveries = ValidateDeliveries(checkDeliveryExists, unvalidatedDeliveries);
+            IDeliveries deliveries = await ValidateDeliveries(checkDeliveryExists, unvalidatedDeliveries);
             deliveries = CancelDeliveries(deliveries);
 
             return deliveries.Match(

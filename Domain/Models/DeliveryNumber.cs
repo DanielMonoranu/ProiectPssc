@@ -1,11 +1,12 @@
 ﻿using Exemple.Domain.Models;
+using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using static LanguageExt.Prelude;
 namespace Domain.Models
 {
     public record DeliveryNumber
@@ -26,16 +27,13 @@ namespace Domain.Models
 
         private static bool IsValid(string value) => Pattern.IsMatch(value);
 
-        public static bool TryParse(string valueString,out DeliveryNumber deliveryNumber)
+        public static Option<DeliveryNumber> TryParse(string valueString)
         {
-            bool isValid = false;
-            deliveryNumber = null;
             if (IsValid(valueString))
             {
-                isValid = true;
-                deliveryNumber= new DeliveryNumber(valueString);
+                return Some<DeliveryNumber>(new(valueString));
             }
-            return isValid;
+            return None;
         }
 
     }

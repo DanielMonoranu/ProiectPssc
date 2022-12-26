@@ -1,10 +1,11 @@
 ﻿using Exemple.Domain.Models;
+using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using static LanguageExt.Prelude;
 namespace Domain.Models
 {
     public record DeliveryEntry
@@ -26,21 +27,18 @@ namespace Domain.Models
 
         }
 
-        public static bool TryParseStatus(string statusString,string orderString, out DeliveryEntry delivery)
+        public static Option<DeliveryEntry> TryParseStatus(string statusString, string orderString)
         {
-            bool isValid = false;
-            delivery = null;
-            if(int.TryParse(statusString,out int numericStatus)&&int.TryParse(orderString,out int numericOrder))
+            if (int.TryParse(statusString, out int numericStatus) && int.TryParse(orderString, out int numericOrder) && IsValid(numericStatus))
             {
-                if (IsValid(numericStatus))
-                {
-                    isValid= true;
-                    delivery = new(numericStatus, numericOrder);
+                return Some<DeliveryEntry>(new(numericStatus, numericOrder));
 
-
-                }
             }
-            return isValid;
+            else
+            {
+
+                return None;
+            }
         }
 
 

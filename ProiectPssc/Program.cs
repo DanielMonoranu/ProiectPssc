@@ -1,23 +1,21 @@
 ﻿using Domain;
 using Domain.Models;
+using LanguageExt;
+using LanguageExt;
+using static LanguageExt.Prelude;
 
 namespace ProiectPssc
 {
     class Program
     {
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+
             var listOfDeliveries = ReadListOfDeliveries().ToArray();
-            /*
-                foreach (var delivery in listOfDeliveries)
-                {
-                    Console.WriteLine(delivery);
-                }*/
-                
             CancelDeliveryCommand command = new(listOfDeliveries);
-                CancelDeliveryWorkflow workflow = new CancelDeliveryWorkflow();
-            var result = workflow.Execute(command, (deliveryNumber) => true);
+            CancelDeliveryWorkflow workflow = new();
+            var result =await workflow.ExecuteAsync(command, CheckDeliveryExists);
 
             result.Match(
                 whenCancelDeliveryFailedEvent: eventResult =>
@@ -32,7 +30,7 @@ namespace ProiectPssc
                     return eventResult;
                 }
                 );
-            
+
             /*        var result = workflow.Execute(command, (deliveryNumber) => true);
                     result.Match(
                         whenCancelDeliveryFailedEvent: failedEvent =>
@@ -67,8 +65,6 @@ namespace ProiectPssc
                 var orderId = ReadValue("Order Id:");
                 if (string.IsNullOrEmpty(orderId)) { break; }
 
-                //var deliveryNumberToAdd = new DeliveryNumber(deliveryNumber);
-               // var deliveryEntryToAdd = new DeliveryEntry(Int32.Parse(status), Int32.Parse(orderId));
 
                 listOfDeliveries.Add(new(deliveryNumber, status, orderId));
             } while (true);
@@ -82,6 +78,15 @@ namespace ProiectPssc
         {
             Console.Write(prompt);
             return Console.ReadLine();
+        }
+
+        private static TryAsync<bool> CheckDeliveryExists(DeliveryNumber delivery)
+        {
+            Func<Task<bool>> func = async () =>
+            {
+                return true;
+            };
+            return TryAsync(func);
         }
 
     }

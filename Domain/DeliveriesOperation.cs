@@ -1,81 +1,72 @@
 ﻿using Domain.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static LanguageExt.Prelude;
+using LanguageExt;
 using static Domain.Models.Deliveries;
+using System.Text;
 
 namespace Domain
 {
     public static class DeliveriesOperation
     {
+        public static Task<IDeliveries> ValidateDeliveries(Func<DeliveryNumber, TryAsync<bool>> checkDeliveryExists, UnvalidatedDeliveries deliveries) =>
+            deliveries.DeliveryList
+                .Select(ValidateDeliveryNumber(checkDeliveryExists))
+                .Aggregate(CreateEmptyDeliveryList().ToAsync(), ReduceValidDeliveries)
+                .MatchAsync(
+                    LeftAsync: errorMessage => Task.FromResult((IDeliveries)new InvalidatedDeliveries(deliveries.DeliveryList, errorMessage)),
+                    Right: validatedDeliveries => new ValidatedDeliveries(validatedDeliveries));
 
-        public static IDeliveries ValidateDeliveries(Func<DeliveryNumber,bool> checkDeliveryExists, UnvalidatedDeliveries deliveries)
+        private static Func<UnvalidatedDelivery, EitherAsync<string, ValidatedDelivery>> ValidateDeliveryNumber(Func<DeliveryNumber, TryAsync<bool>> checkDeliveryExists) =>
+        unvalidatedDelivery => ValidateDelivery(checkDeliveryExists, unvalidatedDelivery);
+
+        private static EitherAsync<string, ValidatedDelivery> ValidateDelivery(Func<DeliveryNumber, TryAsync<bool>> checkDeliveryExists, UnvalidatedDelivery unvalidatedDelivery) =>
+        from deliveryEntryInfo in DeliveryEntry.TryParseStatus(unvalidatedDelivery.statusId, unvalidatedDelivery.orderID)
+                                                .ToEitherAsync(() => $"Invalid delivery entry information({unvalidatedDelivery.DeliveryNumber},{unvalidatedDelivery.statusId},{unvalidatedDelivery.orderID})")
+        from deliveryNumber in DeliveryNumber.TryParse(unvalidatedDelivery.DeliveryNumber)
+                                             .ToEitherAsync(() => $"Invalid delivery number({unvalidatedDelivery.DeliveryNumber})")
+        from deliveryExists in checkDeliveryExists(deliveryNumber)
+                            .ToEither(error => error.ToString())
+        select new ValidatedDelivery(deliveryNumber, deliveryEntryInfo);
+
+
+        private static Either<string, List<ValidatedDelivery>> CreateEmptyDeliveryList() => Right(new List<ValidatedDelivery>());
+
+        private static EitherAsync<string, List<ValidatedDelivery>> ReduceValidDeliveries(EitherAsync<string, List<ValidatedDelivery>> acc, EitherAsync<string, ValidatedDelivery> next) =>
+            from list in acc
+            from nextDelivery in next
+            select list.AppendDelivery(nextDelivery);
+
+        private static List<ValidatedDelivery> AppendDelivery(this List<ValidatedDelivery> list, ValidatedDelivery validDelivery)
         {
-            List<ValidatedDelivery> validatedDeliveries = new();
-            bool isValidList = true;
-            string invalidReason = string.Empty;
-            foreach(var unvalidatedDeliveryEntry in deliveries.DeliveryList)
-            {
-                if(!DeliveryEntry.TryParseStatus(unvalidatedDeliveryEntry.statusId,unvalidatedDeliveryEntry.orderID,out DeliveryEntry deliveryEntry))
-                {
-                    invalidReason = $"Invalid status of delivery ({unvalidatedDeliveryEntry.DeliveryNumber},{unvalidatedDeliveryEntry.statusId},{unvalidatedDeliveryEntry.orderID})";
-                    isValidList = false;
-                    break;
-                }
-                if(!DeliveryNumber.TryParse(unvalidatedDeliveryEntry.DeliveryNumber,out DeliveryNumber deliveryNumber)
-                    && checkDeliveryExists(deliveryNumber)){
-                    invalidReason = $"Invalid delivery number ({unvalidatedDeliveryEntry.DeliveryNumber})";
-                    isValidList = false;
-                    break;
-                }
-                ValidatedDelivery validatedDelivery = new(deliveryNumber, deliveryEntry);
-                validatedDeliveries.Add(validatedDelivery);
-            }
-            if (isValidList)
-            {
-                return new ValidatedDeliveries(validatedDeliveries);
-            }
-            else
-            {
-                return new InvalidatedDeliveries(deliveries.DeliveryList, invalidReason);
-            }
-
+            list.Add(validDelivery);
+            return list;
         }
-
 
         public static IDeliveries CancelDeliveries(IDeliveries deliveries) =>
             deliveries.Match(
-                whenUnvalidatedDeliveries: unvalidatedDelivery => unvalidatedDelivery,
-                whenInvalidatedDeliveries: invalidatedDelivery => invalidatedDelivery,
-                whenCancelledDeliveries: cancelledDelivery => cancelledDelivery,
-                whenValidatedDeliveries: validatedDelivery =>
-                {
-                    var cancelledDelivery = validatedDelivery.DeliveryList.Select(delivery =>
-                        new CancelledDelivery(delivery.DeliveryNumber, delivery.DeliveryEntry));
+                whenUnvalidatedDeliveries: unvalidDeliveries => unvalidDeliveries,
+                whenInvalidatedDeliveries: invalidDeliveries => invalidDeliveries,
+                whenCancelledDeliveries: cancelledDeliveries => cancelledDeliveries,
+                whenValidatedDeliveries: CancelDeliveries);
+
+        private static IDeliveries CancelDeliveries(ValidatedDeliveries validDeliveries) =>
+            new CancelledDeliveries(validDeliveries.DeliveryList
+                                                    .Select(CancelDelivery)
+                                                     .ToList()
+                                                      .AsReadOnly(),
+                                                      validDeliveries.DeliveryList.Aggregate(new StringBuilder(), CreateMessage).ToString(), DateTime.Now);
 
 
-                    StringBuilder message = new();
-                    validatedDelivery.DeliveryList.Aggregate(message, (export, delivery) => export.AppendLine($"{delivery.DeliveryNumber},order status: {delivery.DeliveryEntry.Status}, order Id: {delivery.DeliveryEntry.OrderId}"));
-                    CancelledDeliveries cancelledDeliveries = new(cancelledDelivery.ToList().AsReadOnly(), message.ToString(), DateTime.Now);
-
-                    return cancelledDeliveries;
-                }
-                );
-                
+        private static CancelledDelivery CancelDelivery(ValidatedDelivery validDelivery) =>
+            new CancelledDelivery(validDelivery.DeliveryNumber, validDelivery.DeliveryEntry);
 
 
-         
+        private static StringBuilder CreateMessage(StringBuilder export, ValidatedDelivery delivery) =>
+            export.AppendLine($"Delivery Number:{delivery.DeliveryNumber.Value}, status: {delivery.DeliveryEntry.Status}, orderId:{delivery.DeliveryEntry.OrderId}");
+
+
+
     }
 }
 
 
-/*
- *  {
-                    StringBuilder message = new();
-                    validatedDelivery.DeliveryList.Aggregate(message, (export, delivery) => export.AppendLine($"{delivery.DeliveryNumber},order status: {delivery.DeliveryEntry.Status}, order Id: {delivery.DeliveryEntry.OrderId}"));
-                    CancelledDeliveries cancelledDeliveries = new(validatedDelivery.DeliveryList, message.ToString(), DateTime.Now);
-                    return cancelledDeliveries;
-                });*/
