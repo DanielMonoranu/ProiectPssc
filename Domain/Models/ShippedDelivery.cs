@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public record ShippedDelivery(DeliveryNumber DeliveryNumber, Product Product);
+    public record ShippedDelivery(DeliveryNumber DeliveryNumber, DeliveryEntry Product);
 }

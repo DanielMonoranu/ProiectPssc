@@ -13,11 +13,11 @@ namespace Domain.Models
         public interface ICancelDeliveryEvent { }
         public record CancelDeliverySucceededEvent : ICancelDeliveryEvent
         {
-            public string csv { get; }
+            public string MessageShown { get; }
             public DateTime CancelDate { get; }
-            internal CancelDeliverySucceededEvent(string csv, DateTime cancelDate)
+            internal CancelDeliverySucceededEvent(string message, DateTime cancelDate)
             {
-                this.csv = csv;
+                MessageShown = message;
                 CancelDate = cancelDate;
             }
         }

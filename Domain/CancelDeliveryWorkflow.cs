@@ -15,12 +15,17 @@ namespace Domain
 
         public ICancelDeliveryEvent Execute(CancelDeliveryCommand command, Func<DeliveryNumber, bool> checkDeliveryExists)
         {
-            ValidDeliveries validDeliveries = new ValidDeliveries(command.InputDeliveries);
-            IDeliveries deliveries = CancelDelivery(checkDeliveryExists, validDeliveries);
+            UnvalidatedDeliveries unvalidatedDeliveries = new UnvalidatedDeliveries(command.InputDeliveries);
+            IDeliveries deliveries = ValidateDeliveries(checkDeliveryExists, unvalidatedDeliveries);
+            deliveries = CancelDeliveries(deliveries);
+
             return deliveries.Match(
-                whenValidDeliveries: validDeliveries => new CancelDeliveryFailedEvent("Could not cancel delivery") as ICancelDeliveryEvent,
-                whenCancelledDeliveries: cancelledDeliveries => new CancelDeliverySucceededEvent("Canceled successfully", DateTime.Now) as ICancelDeliveryEvent,
-                whenShippedDeliveries: shippedDeliveries => new CancelDeliveryFailedEvent("Deliveries shipped") as ICancelDeliveryEvent);
+                whenUnvalidatedDeliveries: unvalidDeliveries => new CancelDeliveryFailedEvent("Unexpected unvalidated state of delivery") as ICancelDeliveryEvent,
+                whenInvalidatedDeliveries: invalidDeliveries => new CancelDeliveryFailedEvent(invalidDeliveries.Reason),
+                whenValidatedDeliveries: validDeliveries => new CancelDeliveryFailedEvent("Unexpected validated state"),
+                whenCancelledDeliveries: cancelledDeliveries => new CancelDeliverySucceededEvent(cancelledDeliveries.MessageShown, cancelledDeliveries.CancelDate)
+                );
+
         }
 
     }

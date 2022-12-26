@@ -8,11 +8,11 @@ namespace Domain.Models
 {
     public record CancelDeliveryCommand
     {
-        public CancelDeliveryCommand(IReadOnlyCollection<ValidDelivery> inputDeliveries)
+        public CancelDeliveryCommand(IReadOnlyCollection<UnvalidatedDelivery> inputDeliveries)
         {
             InputDeliveries = inputDeliveries;
         }
-        public IReadOnlyCollection<ValidDelivery> InputDeliveries { get; }
+        public IReadOnlyCollection<UnvalidatedDelivery> InputDeliveries { get; }
 
     }
 }

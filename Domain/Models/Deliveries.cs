@@ -14,32 +14,55 @@ namespace Domain.Models
 
         //validated, unvalidated delivery?
 
-        public record ValidDeliveries : IDeliveries
+
+
+        public record UnvalidatedDeliveries : IDeliveries
         {
-            public ValidDeliveries(IReadOnlyCollection<ValidDelivery> deliveriesList)
+            public UnvalidatedDeliveries(IReadOnlyCollection<UnvalidatedDelivery> deliveryList)
+            {
+                DeliveryList = deliveryList;
+            }
+            public IReadOnlyCollection<UnvalidatedDelivery> DeliveryList { get; }
+        }
+
+        public record InvalidatedDeliveries : IDeliveries
+        {
+            public InvalidatedDeliveries(IReadOnlyCollection<UnvalidatedDelivery> deliveryList, string reason)
+            {
+                DeliveryList = deliveryList;
+                Reason = reason;
+            }
+
+            public IReadOnlyCollection<UnvalidatedDelivery> DeliveryList { get; }
+            public string Reason { get; }
+        }
+
+
+
+
+        public record ValidatedDeliveries : IDeliveries
+        {
+            public ValidatedDeliveries(IReadOnlyCollection<ValidatedDelivery> deliveriesList)
             {
                 DeliveryList = deliveriesList;
             }
-            public IReadOnlyCollection<ValidDelivery> DeliveryList { get; }
+            public IReadOnlyCollection<ValidatedDelivery> DeliveryList { get; }
 
         }
 
-        public record ShippedDeliveries : IDeliveries
-        {
-            public ShippedDeliveries(IReadOnlyCollection<ShippedDelivery> deliveriesList)
-            {
-                DeliveryList = deliveriesList;
-            }
-            public IReadOnlyCollection<ShippedDelivery> DeliveryList { get; }
-        }
 
         public record CancelledDeliveries : IDeliveries
         {
-            public CancelledDeliveries(IReadOnlyCollection<CancelledDelivery> deliveriesList)
+            public CancelledDeliveries(IReadOnlyCollection<CancelledDelivery> deliveriesList, string messageShown, DateTime cancelDate)
             {
                 DeliveryList = deliveriesList;
+                MessageShown = messageShown;
+                CancelDate = cancelDate;
             }
             public IReadOnlyCollection<CancelledDelivery> DeliveryList { get; }
+            public DateTime CancelDate { get; }
+            public string MessageShown { get; }
+
         }
 
     }

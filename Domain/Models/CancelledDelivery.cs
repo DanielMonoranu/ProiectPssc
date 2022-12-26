@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public record CancelledDelivery(DeliveryNumber DeliveryNumber,Product Product);
+    public record CancelledDelivery(DeliveryNumber DeliveryNumber,DeliveryEntry DeliveryEntry);
     
 }

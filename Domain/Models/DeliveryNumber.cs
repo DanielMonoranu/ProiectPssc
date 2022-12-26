@@ -12,7 +12,7 @@ namespace Domain.Models
     {
         private static readonly Regex Pattern = new("^CO[0-9]{3}$");
         public string Value { get; }
-        public DeliveryNumber(string value)
+        private DeliveryNumber(string value)
         {
             if (IsValid(value))
             {
@@ -20,21 +20,20 @@ namespace Domain.Models
             }
             else
             {
-                throw new InvalidStudentRegistrationNumberException("");
-             //   throw new Exception("Invalid Pattern of delivery!");
+                throw new InvalidDeliveryNumberException("");
             }
         }
 
         private static bool IsValid(string value) => Pattern.IsMatch(value);
 
-        public static bool TryParse(string value,out DeliveryNumber deliveryNumber)
+        public static bool TryParse(string valueString,out DeliveryNumber deliveryNumber)
         {
             bool isValid = false;
             deliveryNumber = null;
-            if (IsValid(value))
+            if (IsValid(valueString))
             {
                 isValid = true;
-                deliveryNumber= new DeliveryNumber(value);
+                deliveryNumber= new DeliveryNumber(valueString);
             }
             return isValid;
         }
