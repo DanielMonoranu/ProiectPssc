@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A5A46109-931D-4BE7-A38A-BC14D300212B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proiect", "proiect", "{12051448-F5B6-439C-BBEE-50B98784CCE5}"
+	ProjectSection(SolutionItems) = preProject
+		.track = .track
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "..\ConsoleApp1\App.Domain\App.Domain.csproj", "{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}"
 EndProject
