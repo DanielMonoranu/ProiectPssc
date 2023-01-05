@@ -12,13 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proiect", "proiect", "{1205
 		.track = .track
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "..\ConsoleApp1\App.Domain\App.Domain.csproj", "{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "App.Domain\App.Domain.csproj", "{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Data", "..\ConsoleApp1\App.Data\App.Data.csproj", "{12272EF0-82C9-4432-BFD0-8BA3F93FBE1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Data", "App.Data\App.Data.csproj", "{12272EF0-82C9-4432-BFD0-8BA3F93FBE1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "..\ConsoleApp1\App\App.csproj", "{9455001C-8E24-41E8-BA6A-0D10488DE593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{9455001C-8E24-41E8-BA6A-0D10488DE593}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Api", "..\ConsoleApp1\App.Api\App.Api.csproj", "{44E6F900-D42D-4F97-9CB6-E0E7E5B59B88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Api", "App.Api\App.Api.csproj", "{44E6F900-D42D-4F97-9CB6-E0E7E5B59B88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{DB2CBDB2-F3D8-414E-BA6E-8537E2BAF0D8}"
 	ProjectSection(SolutionItems) = preProject

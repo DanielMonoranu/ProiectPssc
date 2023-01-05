@@ -2832,19 +2832,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\oprea\\.nuget\\packages\\": {}
+    "C:\\Users\\mgfma\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\oprea\\source\\repos\\ConsoleApp1\\App.Domain\\App.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\mgfma\\Desktop\\PsscProject\\App.Domain\\App.Domain.csproj",
       "projectName": "App.Domain",
-      "projectPath": "C:\\Users\\oprea\\source\\repos\\ConsoleApp1\\App.Domain\\App.Domain.csproj",
-      "packagesPath": "C:\\Users\\oprea\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\oprea\\source\\repos\\ConsoleApp1\\App.Domain\\obj\\",
+      "projectPath": "C:\\Users\\mgfma\\Desktop\\PsscProject\\App.Domain\\App.Domain.csproj",
+      "packagesPath": "C:\\Users\\mgfma\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mgfma\\Desktop\\PsscProject\\App.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\oprea\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mgfma\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
