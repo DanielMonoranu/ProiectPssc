@@ -1,5 +1,9 @@
 ﻿using App.Domain.Deliveries.Models;
 using App.Domain.Deliveries.Repositories;
+using static App.Domain.Deliveries.Models.CancelDeliveryEvent;
+using static App.Domain.Deliveries.Models.Deliveries;
+using static App.Domain.Deliveries.DeliveriesOperation;
+
 using LanguageExt;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,10 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static App.Domain.Deliveries.Models.CancelDeliveryEvent;
-using static App.Domain.Deliveries.Models.Deliveries;
 using static LanguageExt.Prelude;
-using static App.Domain.Deliveries.DeliveriesOperation;
 
 namespace App.Domain.Deliveries
 {
@@ -55,6 +56,7 @@ namespace App.Domain.Deliveries
 
         private async Task<Either<IDeliveries, AnnouncedDeliveries>> ExecuteWorkFlowAsync(UnvalidatedDeliveries unvalidatedDeliveries, IEnumerable<CancelledDelivery> existingEntries, Func<DeliveryNumber, Option<DeliveryNumber>> checkDeliveryExists)
         {
+
             IDeliveries deliveries = await ValidateDeliveries(checkDeliveryExists, unvalidatedDeliveries);
             deliveries = CancelDeliveries(deliveries);
             deliveries = MergeDeliveries(deliveries, existingEntries);

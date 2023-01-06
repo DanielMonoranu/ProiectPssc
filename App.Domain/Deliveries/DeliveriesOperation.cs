@@ -1,11 +1,11 @@
 ﻿using App.Domain.Deliveries.Models;
+using static App.Domain.Deliveries.Models.Deliveries;
 using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static App.Domain.Deliveries.Models.Deliveries;
 using static LanguageExt.Prelude;
 
 namespace App.Domain.Deliveries

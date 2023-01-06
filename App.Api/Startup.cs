@@ -1,10 +1,14 @@
 using App.Data;
 using App.Data.Deliveries;
 using App.Data.Deliveries.Repositories;
+using App.Data.Invoices;
+using App.Data.Invoices.Repositories;
 using App.Data.Repositories;
 using App.Domain;
 using App.Domain.Deliveries;
 using App.Domain.Deliveries.Repositories;
+using App.Domain.Invoices;
+using App.Domain.Invoices.Repositories;
 using App.Domain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +41,6 @@ namespace App.Api
         {
             services.AddDbContext<OrdersContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddTransient<IOrderRepository, OrdersRepository>();
             services.AddTransient<IOrderRegistrationNumberRepository, OrderRegistrationsRepository>();
             services.AddTransient<CancelOrderWorkflow>();
@@ -45,11 +48,15 @@ namespace App.Api
 
             services.AddDbContext<DeliveriesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddTransient<IDeliveriesRepository, DeliveriesRepository>();
             services.AddTransient<IEntriesRepository, EntriesRepository>();
             services.AddTransient<CancelDeliveryWorkflow>();
 
+            services.AddDbContext<InvoicesContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IInvoicesRepository, InvoicesRepository>();
+            services.AddTransient<IInvoiceEntriesRepository, InvoiceEntriesRepository>();
+            services.AddTransient<CancelInvoiceWorkflow>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
