@@ -10,15 +10,3 @@ C:\Users\oprea\source\repos\ConsoleApp1\App.Domain\obj\Debug\net5.0\App.Domain.d
 C:\Users\oprea\source\repos\ConsoleApp1\App.Domain\obj\Debug\net5.0\refint\App.Domain.dll
 C:\Users\oprea\source\repos\ConsoleApp1\App.Domain\obj\Debug\net5.0\App.Domain.pdb
 C:\Users\oprea\source\repos\ConsoleApp1\App.Domain\obj\Debug\net5.0\ref\App.Domain.dll
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\bin\Debug\net5.0\App.Domain.deps.json
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\bin\Debug\net5.0\App.Domain.dll
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\bin\Debug\net5.0\App.Domain.pdb
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.csproj.AssemblyReference.cache
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.AssemblyInfoInputs.cache
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.AssemblyInfo.cs
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.csproj.CoreCompileInputs.cache
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.dll
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\refint\App.Domain.dll
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\App.Domain.pdb
-C:\Users\mgfma\Desktop\PsscProject\App.Domain\obj\Debug\net5.0\ref\App.Domain.dll

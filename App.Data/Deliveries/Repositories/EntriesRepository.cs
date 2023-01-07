@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static App.Domain.Deliveries.Models.Deliveries;
 using static LanguageExt.Prelude;
+
+
 namespace App.Data.Deliveries.Repositories
 {
     public class EntriesRepository : IEntriesRepository
@@ -27,7 +29,7 @@ namespace App.Data.Deliveries.Repositories
                 .AsNoTracking().ToListAsync())
                 .Select(result => new CancelledDelivery(
                     DeliveryNumber: new(result.DeliveryNumber),
-                    DeliveryEntry: new(0, result.OrderId ?? 0))
+                    DeliveryEntry: new(result.Status??0, result.OrderId ?? 0))
                 { EntryId = result.EntryId }
                     ).ToList();
 
@@ -43,7 +45,7 @@ namespace App.Data.Deliveries.Repositories
                                          .Select(e => new EntryDto()
                                          {
                                              DeliveryId = deliveries[e.DeliveryNumber.Value].Single().DeliveryId,
-                                             Status = e.DeliveryEntry.Status,
+                                             Status = 0,
                                              OrderId = e.DeliveryEntry.OrderId
                                          });
             var updatedEntries = deliveryEntries.DeliveryList
@@ -52,7 +54,7 @@ namespace App.Data.Deliveries.Repositories
                                          {
                                              EntryId = e.EntryId,
                                              DeliveryId = deliveries[e.DeliveryNumber.Value].Single().DeliveryId,
-                                             Status = e.DeliveryEntry.Status,
+                                             Status = 0,
                                              OrderId = e.DeliveryEntry.OrderId
                                          });
             _deliveriesContext.AddRange(newEntries);

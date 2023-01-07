@@ -1,0 +1,23 @@
+USE [PSSC]
+GO
+
+/****** Object:  Table [dbo].[DeliveryEntries]    Script Date: 1/6/2023 7:05:22 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DeliveryEntries](
+	[EntryId] [int] NOT NULL,
+	[DeliveryId] [int] NOT NULL,
+	[Status] [int] NOT NULL,
+	[OrderId] [int] NOT NULL,
+ CONSTRAINT [PK_DeliveryEntries] PRIMARY KEY CLUSTERED 
+(
+	[EntryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

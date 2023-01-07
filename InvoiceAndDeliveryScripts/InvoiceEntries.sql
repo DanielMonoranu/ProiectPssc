@@ -1,0 +1,23 @@
+USE [PSSC]
+GO
+
+/****** Object:  Table [dbo].[InvoiceEntries]    Script Date: 1/6/2023 7:07:05 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[InvoiceEntries](
+	[EntryId] [int] NOT NULL,
+	[InvoiceID] [int] NOT NULL,
+	[Status] [varchar](50) NULL,
+	[VAT] [decimal](18, 0) NULL,
+ CONSTRAINT [PK_InvoiceEntries] PRIMARY KEY CLUSTERED 
+(
+	[EntryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

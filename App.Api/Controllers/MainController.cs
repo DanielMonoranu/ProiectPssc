@@ -12,6 +12,9 @@ using App.Domain.Models;
 using App.Domain.Deliveries.Repositories;
 using App.Domain.Deliveries.Models;
 using App.Domain.Deliveries;
+using App.Domain.Invoices.Repositories;
+using App.Domain.Invoices.Models;
+using App.Domain.Invoices;
 
 namespace App.Api.Controllers
 {
@@ -102,6 +105,49 @@ namespace App.Api.Controllers
             return result.Match<IActionResult>(
                whenCancelDeliveryFailedEvent: failedEvent => StatusCode(StatusCodes.Status500InternalServerError, failedEvent.Reason),
                whenCancelDeliverySucceededEvent: succesEvent => Ok());
+        }
+
+        private static UnvalidatedInvoice MapInputToUnvalidate(InputInvoice entry) =>
+            new UnvalidatedInvoice(
+                InvoiceNumber: entry.InputInvoiceNumber,
+                Status: entry.Status,
+                Vat: entry.VAT );
+
+
+        
+        //INVOICES:
+        [HttpGet("GetInvoices")]
+        public async Task<IActionResult> GetAllInvoices([FromServices] IInvoiceEntriesRepository entriesRepository) =>
+           await entriesRepository.TryGetExistingInvoice().Match(
+               Succ: GetAllInvoicesHandleSucces, Fail: GetAllInvoicesHandleError);
+        private ObjectResult GetAllInvoicesHandleError(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return base.StatusCode(StatusCodes.Status500InternalServerError, "UnexpectedError");
+        }
+
+        private OkObjectResult GetAllInvoicesHandleSucces(List<CancelledInvoice> invoices) =>
+            Ok(invoices.Select(invoice => new
+            {
+                InvoiceNumber = invoice.InvoiceNumber.Value,
+                invoice.InvoiceEntry.InvoiceStatus,
+                invoice.InvoiceEntry.VAT
+            }));
+
+        [HttpPost("PostInvoice")]
+        public async Task<IActionResult> AnnounceInvoice([FromServices] CancelInvoiceWorkflow cancelInvoiceWorkflow, [FromBody] InputInvoice[] invoices)
+        {
+
+            var unvalidatedInvoices = invoices.Select(MapInputToUnvalidate).ToList().AsReadOnly();
+
+            CancelInvoiceCommand command = new(unvalidatedInvoices);
+            var result = await cancelInvoiceWorkflow.ExecuteAsync(command);
+
+
+            return result.Match<IActionResult>(
+                whenCancelInvoiceFailedEvent: failedEvent => StatusCode(StatusCodes.Status500InternalServerError, failedEvent.Reason),
+                whenCancelInvoiceSucceededEvent: succesEvent => Ok());
+
         }
 
         private static UnvalidatedDelivery MapInputToUnvalidate(InputDelivery entry) =>
