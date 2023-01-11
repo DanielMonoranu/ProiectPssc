@@ -11,6 +11,7 @@ using static App.Domain.Models.ShopOrderShippedEvent;
 using static App.Domain.ShopOrderOperation;
 using static LanguageExt.Prelude;
 using LanguageExt;
+using AppDto;
 namespace App.Domain
 {
     public class CancelOrderWorkflow
@@ -34,8 +35,18 @@ namespace App.Domain
                          from existingOrders in _orderRepository.TryGetExistingGrades().ToEither(ex => new FailedShopOrders(unvalidatedOrders.GradeList, ex) as IShopOrder)
                          let checkOrderExists = (Func<OrderRegistrationNumber, Option<OrderRegistrationNumber>>)(orderRegistrationNumber => CheckOrderExists(orderRegistrationNumbers, orderRegistrationNumber))
                          from cancelledOrders in ExecuteWorkflowAsync(unvalidatedOrders, existingOrders, checkOrderExists).ToAsync()
-                         from _ in _orderRepository.TrySaveCancelledOrders(cancelledOrders).ToEither(ex => new FailedShopOrders(unvalidatedOrders.GradeList, ex) as IShopOrder)
-                         select cancelledOrders;
+                         from cancelResult in _orderRepository.TrySaveCancelledOrders(cancelledOrders).ToEither(ex => new FailedShopOrders(unvalidatedOrders.GradeList, ex) as IShopOrder)
+                         let orders = cancelledOrders.gradesList
+                         let succesulevent = new ShopOrderShippedScucceededEvent(orders, DateTime.UtcNow)
+                         let eventToPublish = new OrderCancelledEvent()
+                         {
+                             Orders = orders.Select(g => new OrderDTO()
+                             {
+                                id: g.Order.OrderId
+                             }).ToList()
+                         }
+                        from publishEventResult in eventSender.SendAsync("orders", eventToPublish) //HERE
+                         select successfulEvent;
             return await result.Match(
                     Left: examGrades => GenerateFailedEvent(examGrades) as IShopOrdersShippedEvent,
                     Right: cancelledGrades => new ShopOrderShippedScucceededEvent(cancelledGrades.Csv, cancelledGrades.CancellationDate)

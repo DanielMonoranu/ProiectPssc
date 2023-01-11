@@ -1,4 +1,5 @@
-﻿using AppEventsListeners.Models;
+﻿using App.Domain.Models;
+using AppEventsListeners.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace AppAccomodationsEventProcessor
 {
     public class GradesPublishedEventHandler
     {
-        public override string[] EventTypes => new string[] { typeof(GradesPublishedEvent).Name };
+        public override string[] EventTypes => new string[] { typeof(ShopOrderCancelledEvent).Name };
 
-        protected override Task<EventProcessingResult> OnHandleAsync(GradesPublishedEvent eventData)
+        protected override Task<EventProcessingResult> OnHandleAsync(ShopOrderCancelledEvent eventData)
         {
             Console.WriteLine(eventData.ToString());
             return Task.FromResult(EventProcessingResult.Completed);
