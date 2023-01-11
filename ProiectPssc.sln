@@ -3,22 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProiectPssc", "ProiectPssc\ProiectPssc.csproj", "{8B216FC1-08AF-45D9-9FD8-62EE0C6DD859}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{A5A46109-931D-4BE7-A38A-BC14D300212B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proiect", "proiect", "{12051448-F5B6-439C-BBEE-50B98784CCE5}"
 	ProjectSection(SolutionItems) = preProject
 		.track = .track
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "..\ConsoleApp1\App.Domain\App.Domain.csproj", "{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "App.Domain\App.Domain.csproj", "{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Data", "..\ConsoleApp1\App.Data\App.Data.csproj", "{12272EF0-82C9-4432-BFD0-8BA3F93FBE1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Data", "App.Data\App.Data.csproj", "{12272EF0-82C9-4432-BFD0-8BA3F93FBE1D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "..\ConsoleApp1\App\App.csproj", "{9455001C-8E24-41E8-BA6A-0D10488DE593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{9455001C-8E24-41E8-BA6A-0D10488DE593}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Api", "..\ConsoleApp1\App.Api\App.Api.csproj", "{44E6F900-D42D-4F97-9CB6-E0E7E5B59B88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Api", "App.Api\App.Api.csproj", "{44E6F900-D42D-4F97-9CB6-E0E7E5B59B88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{DB2CBDB2-F3D8-414E-BA6E-8537E2BAF0D8}"
 	ProjectSection(SolutionItems) = preProject
@@ -45,14 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8B216FC1-08AF-45D9-9FD8-62EE0C6DD859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B216FC1-08AF-45D9-9FD8-62EE0C6DD859}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B216FC1-08AF-45D9-9FD8-62EE0C6DD859}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B216FC1-08AF-45D9-9FD8-62EE0C6DD859}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5A46109-931D-4BE7-A38A-BC14D300212B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5A46109-931D-4BE7-A38A-BC14D300212B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5A46109-931D-4BE7-A38A-BC14D300212B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5A46109-931D-4BE7-A38A-BC14D300212B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24D98C4F-D6CE-48B3-BAE3-B2EEB9362C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
